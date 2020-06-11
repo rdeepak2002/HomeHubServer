@@ -3,9 +3,11 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const nocache = require('nocache')
+const { exec } = require("child_process")
 
 const app = express()
 const server = require('http').createServer(app)
+const port = 8080
 
 app.use(express.static(__dirname))
 app.use(nocache())
@@ -18,11 +20,23 @@ app.get('/', (req, res) =>  {
 })
 
 app.post('/command', (req, res) => {
-  console.log('received request')
   const command = req.body.command
-  console.log(command)
-  const response = { message: command }
-  res.send(response)
+
+  exec(command, (error, stdout, stderr) => {
+    if (error) {
+      console.log(`error: ${error.message}`)
+      res.send({ message: error.message })
+      return
+    }
+    if (stderr) {
+      console.log(`stderr: ${stderr}`)
+      res.send({ message: stderr })
+      return
+    }
+    res.send({ message: stdout })
+  })
 })
 
-server.listen(8080)
+app.listen(port, () => {
+  console.log('server listening on port ' + port)
+})
