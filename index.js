@@ -36,7 +36,7 @@ app.post('/command', (req, res) => {
 
     // console.log(stdout)
 
-    res.send({ message: 'Done!' })
+    res.send({ message: stdout })
   })
 })
 
