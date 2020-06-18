@@ -14,6 +14,10 @@ Then add the following line:
 @lxterminal -e /home/pi/HomeHubServer/start.sh
 ```
 
+### `npm install`
+
+Installs node modules.
+
 ### `node index.js`
 
 Runs the server.
